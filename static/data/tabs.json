@@ -1,0 +1,135 @@
+{
+  "tabs": [
+    {
+      "label": "自有普通支付",
+      "payType": "1",
+      "formList": [
+        {
+          "key": "orderId",
+          "value": ""
+        },
+        {
+          "key": "productID",
+          "value": ""
+        },
+        {
+          "key": "contentID",
+          "value": ""
+        },
+        {
+          "key": "cpID",
+          "value": ""
+        },
+        {
+          "key": "fee",
+          "value": ""
+        },
+        {
+          "key": "saleType",
+          "value": ""
+        },
+        {
+          "key": "description",
+          "value": ""
+        },
+        {
+          "key": "vasType",
+          "value": ""
+        },
+        {
+          "key": "servType",
+          "value": ""
+        },
+        {
+          "key": "memberType",
+          "value": ""
+        },
+        {
+          "key": "sessionId",
+          "value": ""
+        },
+        {
+          "key": "channelClass",
+          "value": ""
+        },
+        {
+          "key": "resvParam",
+          "value": ""
+        },
+        {
+          "key": "payMethod",
+          "value": ""
+        },
+        {
+          "key": "cpparam",
+          "value": ""
+        },
+        {
+          "key": "settleDate",
+          "value": ""
+        },
+        {
+          "key": "spCode",
+          "value": ""
+        },
+        {
+          "key": "itemID",
+          "value": ""
+        },
+        {
+          "key": "customerPolicy",
+          "value": ""
+        },
+        {
+          "key": "maxCount",
+          "value": ""
+        },
+        {
+          "key": "chapter",
+          "value": ""
+        },
+        {
+          "key": "startChapter",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "label": "第三方普通支付",
+      "payType": "2",
+      "formList": [{
+          "key": "netId",
+          "value": ""
+        },
+        {
+          "key": "authId",
+          "value": ""
+        },
+        {
+          "key": "keeddddddddddddddd",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "label": "连续计费",
+      "payType": "9"
+    },
+    {
+      "label": "批量支付",
+      "payType": "4"
+    },
+    {
+      "label": "购物车支付",
+      "payType": "5"
+    },
+    {
+      "label": "包月支付",
+      "payType": "7"
+    },
+    {
+      "label": "联合包月",
+      "payType": "8"
+    }
+  ]
+}
