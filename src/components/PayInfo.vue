@@ -1,5 +1,6 @@
 <template lang="html">
-  <el-card class="box-card">
+  <el-card class="box-card" v-loading="payResult.isFetching"
+    element-loading-text="努力加载中...">
     <el-row type="flex" justify="center">
       <el-col :span="6">
         <h2>笑傲江湖</h2>
@@ -25,6 +26,11 @@ import { mapState, mapActions } from 'vuex';
 import { PAYDATA_CHANGE } from '../store/pay';
 
 export default {
+  data() {
+    return {
+      result: false
+    };
+  },
   computed: mapState({
     payData: state => state.Pay.payData,
     payResult: state => state.Pay.payResult

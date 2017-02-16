@@ -12,7 +12,8 @@
 <script>
 import axios from 'axios';
 import { mapState, mapActions } from 'vuex';
-import { TABS_FETCH, PAYDATA_CHANGE, PAYDATA_SET } from '../store/pay';
+import { TABS_FETCH, PAYDATA_CHANGE, PAYDATA_SET, TABLEDATA_SET, TABLEDATA_CHANGE, PAYDATA_RESET } from '../store/pay';
+import eventHub from '../util/eventHub';
 import Normal from './NormalPay';
 
 export default {
@@ -46,9 +47,12 @@ export default {
     payData: state => state.Pay.payData
   }),
   methods: {
-    ...mapActions([TABS_FETCH, PAYDATA_CHANGE, PAYDATA_SET]),
+    ...mapActions([TABS_FETCH, PAYDATA_CHANGE, PAYDATA_SET,
+      TABLEDATA_SET, TABLEDATA_CHANGE, PAYDATA_RESET]),
     tabClick() {
-      console.log('click');
+      this.PAYDATA_RESET();
+      eventHub.$emit('authAgin', 'hello');
+      this.geratePaydata(this.tabs);
     },
     geratePaydata(tabs) {
       const payData = {};
@@ -58,10 +62,12 @@ export default {
       });
       payData.payType = this.activeName;
       this.PAYDATA_SET(payData);
+      this.TABLEDATA_SET(this.payData);
       return payData;
     },
     changeSend(obj) {
       this.PAYDATA_CHANGE(obj);
+      this.TABLEDATA_CHANGE(obj);
     },
     changePayData(val) {
       Object.assign(this.tabs[this.activeName - 1].formList, val);

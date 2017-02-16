@@ -98,15 +98,15 @@
       "label": "第三方普通支付",
       "payType": "2",
       "formList": [{
-          "key": "netId",
+          "key": "orderId",
           "value": ""
         },
         {
-          "key": "authId",
+          "key": "productID",
           "value": ""
         },
         {
-          "key": "keeddddddddddddddd",
+          "key": "cpID",
           "value": ""
         }
       ]

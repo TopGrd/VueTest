@@ -2,9 +2,12 @@ export const FORMLIST_GET = 'FORMLIST_GET';
 export const TABS_FETCH = 'TABS_FETCH';
 export const AUTHLIST_FETCH = 'AUTHLIST_FETCH';
 export const PAYDATA_CHANGE = 'PAYDATA_CHANGE';
+export const PAYDATA_RESET = 'PAYDATA_RESET';
 export const PAYDATA_SET = 'PAYDATA_SET';
 export const AUTHLIST_CHANGE = 'AUTHLIST_CHANGE';
 export const PAYRESULT_CHANGE = 'PAYRESULT_CHANGE';
+export const TABLEDATA_SET = 'TABLEDATA_SET';
+export const TABLEDATA_CHANGE = 'TABLEDATA_CHANGE';
 /* eslint-disable no-param-reassign */
 export default {
   state: {
@@ -27,8 +30,10 @@ export default {
       authResult: false,
       status: 'failed',
       text: '支付失败',
-      msg: ''
-    }
+      msg: '',
+      isFetching: false
+    },
+    tableData: []
   },
   mutations: {
     [AUTHLIST_FETCH](state, authList) {
@@ -57,6 +62,28 @@ export default {
     },
     [PAYDATA_SET](state, data) {
       Object.assign(state.payData, data);
+    },
+    [PAYDATA_RESET](state) {
+      state.payData = {};
+    },
+    [TABLEDATA_SET](state, data) {
+      const arr = Object.entries(data);
+      arr.map((item) => {
+        const obj = {};
+        obj.key = item[0];
+        obj.value = item[1];
+        state.tableData.push(obj);
+        return obj;
+      });
+    },
+    [TABLEDATA_CHANGE](state, obj) {
+      let patch = {};
+      patch.key = Object.keys(obj)[0];
+      patch.value = obj[patch.key];
+      let list = state.tableData;
+      let getInsert = item => item.key === patch.key;
+      let index = list.findIndex(getInsert);
+      list.splice(index, 1, patch);
     }
   },
   actions: {
@@ -80,6 +107,15 @@ export default {
     },
     [PAYDATA_SET]({ commit }, data) {
       commit(PAYDATA_SET, data);
-    }
+    },
+    [TABLEDATA_SET]({ commit }, data) {
+      commit(TABLEDATA_SET, data);
+    },
+    [TABLEDATA_CHANGE]({ commit }, obj) {
+      commit(TABLEDATA_CHANGE, obj);
+    },
+    [PAYDATA_RESET]({ commit }) {
+      commit(PAYDATA_RESET);
+    },
   }
 };
