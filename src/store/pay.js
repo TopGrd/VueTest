@@ -8,9 +8,11 @@ export const AUTHLIST_CHANGE = 'AUTHLIST_CHANGE';
 export const PAYRESULT_CHANGE = 'PAYRESULT_CHANGE';
 export const TABLEDATA_SET = 'TABLEDATA_SET';
 export const TABLEDATA_CHANGE = 'TABLEDATA_CHANGE';
+export const LOCALDATA_GET = 'LOCALDATA_GET';
 /* eslint-disable no-param-reassign */
 export default {
   state: {
+    localData: [],
     authList: {
       list: [],
       isFetching: false
@@ -33,7 +35,8 @@ export default {
       msg: '',
       isFetching: false
     },
-    tableData: []
+    tableData: [],
+    dataCache: []
   },
   mutations: {
     [AUTHLIST_FETCH](state, authList) {
@@ -84,6 +87,20 @@ export default {
       let getInsert = item => item.key === patch.key;
       let index = list.findIndex(getInsert);
       list.splice(index, 1, patch);
+    },
+    [LOCALDATA_GET](state) {
+      const dataMap = Object.entries(localStorage).filter(item => item[0] !== 'jfVersion');
+      dataMap.map((item) => {
+        const temp = {};
+        const key = item[0];
+        const value = item[1];
+        temp[key] = JSON.parse(value);
+        if (state.dataCache.indexOf(key) < 0) {
+          state.localData.push(temp);
+          state.dataCache.push(key);
+        }
+        return temp;
+      });
     }
   },
   actions: {
@@ -117,5 +134,8 @@ export default {
     [PAYDATA_RESET]({ commit }) {
       commit(PAYDATA_RESET);
     },
+    [LOCALDATA_GET]({ commit }) {
+      commit(LOCALDATA_GET);
+    }
   }
 };

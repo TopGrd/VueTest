@@ -1,6 +1,8 @@
 <template lang="html">
   <el-tabs type="border-card" v-model="activeName" v-if="isFetching"  v-loading="loading" element-loading-text="配置文件拼命加载中" @tab-click="tabClick">
     <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.payType">
+      <el-button type="primary" icon="plus" v-if="activeName === '5'"></el-button>
+      <el-button type="primary" icon="minus" v-if="activeName === '5'"></el-button>
       <Normal
       @dataChange="changePayData"
       :payList="tab.formList"
