@@ -59,7 +59,20 @@ export default {
         self.gerateAuthdata(res.data.authList);
       })
       .then(self.loading2 = false)
-      .catch(err => console.log(err));
+      .then(this.$notify({
+        title: '成功',
+        message: '应用基本信息已配置',
+        type: 'success',
+        duration: 1500
+      }))
+      .catch((err) => {
+        this.$notify({
+          title: '失败',
+          message: err,
+          type: 'error',
+          duration: 1500
+        });
+      });
     eventHub.$on('authAgin', this.authAginGen);
   },
   computed: mapState({

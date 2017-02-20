@@ -14,7 +14,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex';
-  import { LOCALDATA_GET, PAYDATA_RESET, PAYDATA_SET, TABLEDATA_SET } from '../store/pay';
+  import { LOCALDATA_GET, PAYDATA_RESET, PAYDATA_SET, TABLEDATA_SET, TABS_CHANGE, AUTHLIST_CHANGE } from '../store/pay';
 
   export default {
     data() {
@@ -58,13 +58,15 @@
     watch: {
       value7: function change() {
         this.changeValue();
+        this.changeForm();
       }
     },
     computed: mapState({
       localData: state => state.Pay.localData
     }),
     methods: {
-      ...mapActions([LOCALDATA_GET, PAYDATA_SET, PAYDATA_RESET, TABLEDATA_SET]),
+      ...mapActions([LOCALDATA_GET, PAYDATA_SET, PAYDATA_RESET,
+        TABLEDATA_SET, TABS_CHANGE, AUTHLIST_CHANGE]),
       gerateSelectData() {
         const handler = (item) => {
           const entries = Object.entries(item)[0];
@@ -85,6 +87,22 @@
         this.PAYDATA_RESET();
         this.PAYDATA_SET(this.value7);
         this.TABLEDATA_SET(this.value7);
+      },
+      changeForm() {
+        const patches = Object.entries(this.value7);
+        const listIndex = this.value7.payType - 1;
+        console.log(listIndex);
+        patches.forEach((patch) => {
+          let obj = {};
+          obj.key = patch[0];
+          obj.value = patch[1];
+          let pack = {};
+          pack.obj = obj;
+          pack.listIndex = listIndex;
+          console.log(pack);
+          this.TABS_CHANGE(pack);
+          this.AUTHLIST_CHANGE(obj);
+        });
       }
     }
   };

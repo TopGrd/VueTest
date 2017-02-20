@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <div  v-for="(item, index) in payList">
+    <div v-for="(item, index) in payList">
       <el-col :span="5" :class="index % 4 == 0 ? 'top15' : 'left3 top15'">
         <el-input v-model="item.value" placeholder="请输入内容" @blur="emitMyData(item, $event)">
           <template slot="prepend">{{ item.key }}</template>

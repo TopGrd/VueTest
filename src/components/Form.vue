@@ -3,10 +3,9 @@
     <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.payType">
       <el-button type="primary" icon="plus" v-if="activeName === '5'"></el-button>
       <el-button type="primary" icon="minus" v-if="activeName === '5'"></el-button>
-      <Normal
-      @dataChange="changePayData"
+      <Normal @dataChange="changePayData"
       :payList="tab.formList"
-      :isForm="showSelect"/>
+      :isForm="showSelect">
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -41,7 +40,20 @@ export default {
         return res.data.tabs;
       })
       .then(self.loading = false)
-      .catch(err => console.log(err));
+      .then(this.$notify({
+        title: '成功',
+        message: '支付tab已配置',
+        type: 'success',
+        duration: 1500
+      }))
+      .catch((err) => {
+        this.$notify({
+          title: '失败',
+          message: err,
+          type: 'error',
+          duration: 1500
+        });
+      });
   },
   computed: mapState({
     tabs: state => state.Pay.tabs.list,
@@ -57,10 +69,9 @@ export default {
       this.geratePaydata(this.tabs);
     },
     geratePaydata(tabs) {
-      const payData = {};
-      tabs[this.activeName - 1].formList.map((item) => {
+      let payData = {};
+      tabs[this.activeName - 1].formList.forEach((item) => {
         payData[item.key] = item.value;
-        return payData;
       });
       payData.payType = this.activeName;
       this.PAYDATA_SET(payData);

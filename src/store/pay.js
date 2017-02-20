@@ -1,5 +1,6 @@
 export const FORMLIST_GET = 'FORMLIST_GET';
 export const TABS_FETCH = 'TABS_FETCH';
+export const TABS_CHANGE = 'TABS_CHANGE';
 export const AUTHLIST_FETCH = 'AUTHLIST_FETCH';
 export const PAYDATA_CHANGE = 'PAYDATA_CHANGE';
 export const PAYDATA_RESET = 'PAYDATA_RESET';
@@ -18,11 +19,11 @@ export default {
       isFetching: false
     },
     formList: {
-      list: [],
+      list: {},
       isFetching: false
     },
     tabs: {
-      list: [],
+      list: {},
       isFetching: false
     },
     payData: {
@@ -56,6 +57,13 @@ export default {
       Object.assign(state.tabs.list, tabs);
       state.tabs.isFetching = true;
     },
+    [TABS_CHANGE](state, pack) {
+      console.log('obj', pack);
+      const list = state.tabs.list[pack.listIndex].formList;
+      const getInsert = item => item.key === pack.obj.key;
+      const id = list.findIndex(getInsert);
+      list.splice(id, 1, pack.obj);
+    },
     [FORMLIST_GET](state, formList) {
       Object.assign(state.formList.list, formList);
       state.formList.isFetching = true;
@@ -68,6 +76,7 @@ export default {
     },
     [PAYDATA_RESET](state) {
       state.payData = {};
+      state.tableData = [];
     },
     [TABLEDATA_SET](state, data) {
       const arr = Object.entries(data);
@@ -115,6 +124,10 @@ export default {
     },
     [TABS_FETCH]({ commit }, tabs) {
       commit(TABS_FETCH, tabs);
+    },
+    [TABS_CHANGE]({ commit }, pack) {
+      console.log('commit obj', pack);
+      commit(TABS_CHANGE, pack);
     },
     [FORMLIST_GET]({ commit }, formList) {
       commit(FORMLIST_GET, formList);
