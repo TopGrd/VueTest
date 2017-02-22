@@ -8,7 +8,7 @@
       </el-col>
     </div>
     <el-col :span="7" class="leftSelect" v-if="isForm.show">
-      <el-select v-model="value" placeholder="请选择版本">
+      <el-select v-model="valueVersion" placeholder="请选择版本">
         <el-option
           v-for="item in versions"
           :label="item.label"
@@ -35,12 +35,13 @@ export default {
           value: 'b'
         }
       ],
-      value: 'a'
+      valueVersion: 'a'
     };
   },
   props: ['payList', 'isForm'],
   methods: {
     emitMyData(obj) {
+      console.log('emit');
       this.$emit('dataChange', obj);
     }
   }

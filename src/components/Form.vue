@@ -1,7 +1,7 @@
 <template lang="html">
   <el-tabs type="border-card" v-model="activeName" v-if="isFetching"  v-loading="loading" element-loading-text="配置文件拼命加载中" @tab-click="tabClick">
     <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.payType">
-      <el-button type="primary" icon="plus" v-if="activeName === '5'"></el-button>
+      <el-button type="primary" icon="plus" v-if="activeName === '5'" @click=""></el-button>
       <el-button type="primary" icon="minus" v-if="activeName === '5'"></el-button>
       <Normal @dataChange="changePayData"
       :payList="tab.formList"
@@ -13,8 +13,8 @@
 <script>
 import axios from 'axios';
 import { mapState, mapActions } from 'vuex';
-import { TABS_FETCH, PAYDATA_CHANGE, PAYDATA_SET, TABLEDATA_SET, TABLEDATA_CHANGE, PAYDATA_RESET } from '../store/pay';
 import eventHub from '../util/eventHub';
+import { TABS_FETCH, PAYDATA_CHANGE, PAYDATA_SET, TABLEDATA_SET, TABLEDATA_CHANGE, PAYDATA_RESET, TABS_CHANGE } from '../store/pay';
 import Normal from './NormalPay';
 
 export default {
@@ -24,7 +24,8 @@ export default {
         show: false
       },
       loading: true,
-      activeName: '1'
+      activeName: '1',
+      keyTime: 1
     };
   },
   components: {
@@ -44,16 +45,17 @@ export default {
         title: '成功',
         message: '支付tab已配置',
         type: 'success',
-        duration: 1500
+        duration: 3000
       }))
       .catch((err) => {
         this.$notify({
           title: '失败',
           message: err,
           type: 'error',
-          duration: 1500
+          duration: 3000
         });
       });
+    eventHub.$on('tabActive', this.changeTab);
   },
   computed: mapState({
     tabs: state => state.Pay.tabs.list,
@@ -62,7 +64,7 @@ export default {
   }),
   methods: {
     ...mapActions([TABS_FETCH, PAYDATA_CHANGE, PAYDATA_SET,
-      TABLEDATA_SET, TABLEDATA_CHANGE, PAYDATA_RESET]),
+      TABLEDATA_SET, TABLEDATA_CHANGE, PAYDATA_RESET, TABS_CHANGE]),
     tabClick() {
       this.PAYDATA_RESET();
       eventHub.$emit('authAgin', 'hello');
@@ -87,8 +89,31 @@ export default {
       const obj = {};
       obj[val.key] = val.value;
       this.changeSend(obj);
+    },
+    changeTab(tabIndex) {
+      console.log(tabIndex);
+      this.activeName = tabIndex;
+    },
+    GenPayInfoList() {
+      this.keyTime = this.keyTime + 1;
+      const payInfoList = ['productID', 'contentID', 'cpID', 'fee'];
+      // let newList = payInfoList.map(item => item + this.keyTime);
+      payInfoList.map((item) => {
+        let key = item + this.keyTime;
+        let obj = {
+          key,
+          value: ''
+        };
+        this.TABS_CHANGE({
+          obj,
+          listIndex: 4
+        });
+        return key;
+      });
+      this.reRender();
     }
   }
+
 };
 </script>
 

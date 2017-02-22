@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="value7" placeholder="请选择">
+  <el-select v-model="value7" placeholder="请选择" @change="changeSec">
     <el-option-group
       v-for="group in selects"
       :label="group.label">
@@ -15,6 +15,7 @@
 <script>
   import { mapState, mapActions } from 'vuex';
   import { LOCALDATA_GET, PAYDATA_RESET, PAYDATA_SET, TABLEDATA_SET, TABS_CHANGE, AUTHLIST_CHANGE } from '../store/pay';
+  import eventHub from '../util/eventHub';
 
   export default {
     data() {
@@ -55,12 +56,6 @@
     mounted() {
       this.gerateSelectData();
     },
-    watch: {
-      value7: function change() {
-        this.changeValue();
-        this.changeForm();
-      }
-    },
     computed: mapState({
       localData: state => state.Pay.localData
     }),
@@ -79,9 +74,8 @@
             value
           };
           this.selects[index].data.push(option);
-          return option;
         };
-        this.localData.map(handler);
+        this.localData.forEach(handler);
       },
       changeValue() {
         this.PAYDATA_RESET();
@@ -91,7 +85,6 @@
       changeForm() {
         const patches = Object.entries(this.value7);
         const listIndex = this.value7.payType - 1;
-        console.log(listIndex);
         patches.forEach((patch) => {
           let obj = {};
           obj.key = patch[0];
@@ -99,10 +92,16 @@
           let pack = {};
           pack.obj = obj;
           pack.listIndex = listIndex;
-          console.log(pack);
           this.TABS_CHANGE(pack);
           this.AUTHLIST_CHANGE(obj);
         });
+      },
+      changeSec() {
+        let tabIndex = this.value7.payType.toString();
+        console.log(tabIndex);
+        eventHub.$emit('tabActive', tabIndex);
+        this.changeValue();
+        this.changeForm();
       }
     }
   };

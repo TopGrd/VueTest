@@ -127,8 +127,17 @@
         }
       ]
     }, {
-      "label": "包月支付",
+      "label": "第三方连续支付",
       "payType": "6",
+      "formList": [
+        {
+          "key": "operCode",
+          "value": "233"
+        }
+      ]
+    }, {
+      "label": "包月支付",
+      "payType": "7",
       "formList": [
         {
           "key": "orderId",
@@ -143,7 +152,7 @@
       ]
     }, {
       "label": "联合包月",
-      "payType": "7",
+      "payType": "8",
       "formList": [
         {
           "key": "orderId",

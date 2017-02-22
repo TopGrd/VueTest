@@ -15,7 +15,13 @@
         <el-button class="left3" type="info" @click="init">点击完成计费认证</el-button>
         <el-button class="left3" type="primary" icon="view" @click="dialogVisible.value = true">观测
         </el-button>
-        <Observer :visible="dialogVisible"/>
+        <el-col :span="5" class="left3">
+          <el-input placeholder="请输入内容" v-model="dataKey">
+            <template slot="prepend">key</template>
+          </el-input>
+        </el-col>
+        <el-button class="left3" @click="saveDataToLocal">save</el-button>
+        <Observer :visible="dialogVisible" :storageKey="dataKey"/>
       </el-row>
     </el-tab-pane>
   </el-tabs>
@@ -36,12 +42,14 @@ export default {
   name: 'form',
   data() {
     return {
+      dataKey: '',
       showSelect: {
         show: true
       },
       loading2: true,
       dialogVisible: {
-        value: false
+        value: false,
+        save: false
       }
     };
   },
@@ -106,18 +114,41 @@ export default {
       console.log('authAginGen');
       this.gerateAuthdata(this.authList);
     },
+    saveDataToLocal() {
+      this.dialogVisible.value = true;
+      this.dialogVisible.save = true;
+    },
     /* eslint-disable no-undef */
     init() {
+      const timer = 10000;
+      let initOnce = false;
       this.PAYRESULT_CHANGE({
         isFetching: true,
         msg: '支付认证中'
       });
       const self = this;
       const data = this.$store.state.Pay.payData;
+      setTimeout(() => {
+        if (initOnce === false) {
+          self.$notify({
+            title: '失败',
+            message: '认证失败',
+            type: 'error',
+            duration: 3000
+          });
+          self.PAYRESULT_CHANGE({
+            authResult: false,
+            status: 'auth failed',
+            text: '认证失败',
+            isFetching: false
+          });
+        }
+      }, timer);
       migusdk.init(data.netId, (msg, result, sessionId) => {
+        initOnce = true;
         if (msg === '0000') {
           self.AUTHLIST_CHANGE({
-            key: 'sessionId',
+            key: 'authSessionId',
             value: sessionId
           });
           const app = {
