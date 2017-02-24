@@ -2,5 +2,5 @@
 node_modules/
 dist/
 npm-debug.log
-static/js/migu.js
-static/js/session.js
+src/assets/js/migu.js
+src/assets/js/session.js

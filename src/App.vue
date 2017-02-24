@@ -7,6 +7,9 @@
 <script>
 export default {
   name: 'app',
+  created() {
+    console.info('加载组件完毕...');
+  }
 };
 </script>
 

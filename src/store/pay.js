@@ -109,8 +109,10 @@ export default {
       list.splice(index, 1, patch);
     },
     [LOCALDATA_GET](state) {
+      console.log(localStorage);
+      console.log(window.localStorage);
       const dataMap = Object.entries(localStorage).filter(item => item[0] !== 'jfVersion');
-      dataMap.map((item) => {
+      dataMap.forEach((item) => {
         const temp = {};
         const key = item[0];
         const value = item[1];
@@ -119,7 +121,6 @@ export default {
           state.localData.push(temp);
           state.dataCache.push(key);
         }
-        return temp;
       });
     }
   },

@@ -38,9 +38,16 @@ export default {
   methods: {
     ...mapActions([PAYDATA_CHANGE]),
     pay() {
-      const Pay = this.$store.state.Pay.payData;
+      let Pay = this.$store.state.Pay.payData;
+      Pay.payType = Number(Pay.payType);
       /* eslint-disable no-undef */
-      migusdk.pay(JSON.stringify(Pay));
+      console.log('支付数据:', Pay);
+      const dataStr = JSON.stringify(Pay);
+      migusdk.pay(dataStr, (res, msg, data) => {
+        console.log(res);
+        console.log(msg);
+        console.log(data);
+      });
     }
   }
 };

@@ -11,7 +11,7 @@
         v-if="isFetching"/>
       </el-row>
       <el-row type="flex" justify="start">
-        <SelectData />
+        <SelectData ref="select" />
         <el-button class="left3" type="info" @click="init">点击完成计费认证</el-button>
         <el-button class="left3" type="primary" icon="view" @click="dialogVisible.value = true">观测
         </el-button>
@@ -20,7 +20,8 @@
             <template slot="prepend">key</template>
           </el-input>
         </el-col>
-        <el-button class="left3" @click="saveDataToLocal">save</el-button>
+        <el-button class="left3" @click="saveDataToLocal">保存</el-button>
+        <el-button class="left3" @click="deleteDataToLocal">删除</el-button>
         <Observer :visible="dialogVisible" :storageKey="dataKey"/>
       </el-row>
     </el-tab-pane>
@@ -35,8 +36,8 @@ import eventHub from '../util/eventHub';
 import Normal from './NormalPay';
 import Observer from './Observer';
 import SelectData from './Select';
-import '../../static/js/migu';
-import authSession from '../../static/js/session';
+import '../assets/js/migu';
+import authSession from '../assets/js/session';
 
 export default {
   name: 'form',
@@ -93,7 +94,6 @@ export default {
       TABLEDATA_CHANGE]),
     gerateAuthdata(authList) {
       const dataPatch = {};
-      console.log(authList);
       authList.map((item) => {
         dataPatch[item.key] = item.value;
         this.PAYDATA_CHANGE(dataPatch);
@@ -111,12 +111,33 @@ export default {
       this.changeSend(obj);
     },
     authAginGen() {
-      console.log('authAginGen');
       this.gerateAuthdata(this.authList);
     },
     saveDataToLocal() {
       this.dialogVisible.value = true;
       this.dialogVisible.save = true;
+    },
+    deleteDataToLocal() {
+      let delKey = this.$refs.select.$children[0].$data.selectedLabel;
+      this.$confirm(`此操作将删除${delKey}对应的祝福数据, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+      .then(() => {
+        localStorage.removeItem(delKey);
+      })
+      .then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     /* eslint-disable no-undef */
     init() {
@@ -159,7 +180,6 @@ export default {
           };
 
           authSession(app, () => {
-            console.log('hello');
             self.PAYRESULT_CHANGE({
               authResult: true,
               status: 'auth success',

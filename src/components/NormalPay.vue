@@ -7,7 +7,7 @@
         </el-input>
       </el-col>
     </div>
-    <el-col :span="7" class="leftSelect" v-if="isForm.show">
+    <el-col :span="10" v-if="isForm.show">
       <el-select v-model="valueVersion" placeholder="请选择版本">
         <el-option
           v-for="item in versions"
@@ -15,13 +15,28 @@
           :value="item.value">
         </el-option>
       </el-select>
+      <el-button class="leftBtn" @click="fastTest">极速测试</el-button>
+      <el-dialog title="极速测试" v-model="dialogFormVisible">
+        <el-input
+          type="textarea"
+          autosize
+          placeholder="请输入支付元数据"
+          v-model="textarea">
+        </el-input>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirmTest">确 定</el-button>
+        </span>
+      </el-dialog>
     </el-col>
-
   </div>
 
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import { PAYDATA_SET, PAYDATA_RESET, TABLEDATA_SET } from '../store/pay';
+
 export default {
   data() {
     return {
@@ -35,14 +50,26 @@ export default {
           value: 'b'
         }
       ],
-      valueVersion: 'a'
+      valueVersion: 'a',
+      dialogFormVisible: false,
+      textarea: ''
     };
   },
   props: ['payList', 'isForm'],
   methods: {
+    ...mapActions([PAYDATA_RESET, PAYDATA_SET, TABLEDATA_SET]),
     emitMyData(obj) {
-      console.log('emit');
       this.$emit('dataChange', obj);
+    },
+    fastTest() {
+      this.dialogFormVisible = true;
+    },
+    confirmTest() {
+      let payObject = JSON.parse(this.textarea);
+      this.PAYDATA_RESET();
+      this.PAYDATA_SET(payObject);
+      this.TABLEDATA_SET(payObject);
+      this.dialogFormVisible = false;
     }
   }
 };
@@ -56,6 +83,10 @@ export default {
     margin-bottom: 15px;
   }
   .leftSelect {
-    margin-left: 0.5%;
+    margin-left: 3.5%;
+  }
+  .leftBtn {
+    position: relative;
+    left: 18%;
   }
 </style>

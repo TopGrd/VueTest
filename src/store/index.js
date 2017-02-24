@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createLogger from 'vuex/dist/logger';
+// import createLogger from 'vuex/dist/logger';
 import Pay from './pay';
 
 Vue.use(Vuex);
@@ -10,5 +10,5 @@ export default new Vuex.Store({
   modules: {
     Pay
   },
-  plugins: [createLogger()]
+// plugins: [createLogger()]
 });

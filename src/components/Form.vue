@@ -91,7 +91,6 @@ export default {
       this.changeSend(obj);
     },
     changeTab(tabIndex) {
-      console.log(tabIndex);
       this.activeName = tabIndex;
     },
     GenPayInfoList() {

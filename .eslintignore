@@ -1,3 +1,4 @@
 build/*.js
 config/*.js
 static/js/*.js
+src/assets/js/*.js

@@ -65,7 +65,6 @@
       gerateSelectData() {
         const handler = (item) => {
           const entries = Object.entries(item)[0];
-          console.log(entries);
           const key = entries[0];
           const value = entries[1];
           const index = value.ctype;
@@ -75,7 +74,10 @@
           };
           this.selects[index].data.push(option);
         };
-        this.localData.forEach(handler);
+        console.log(this.localData);
+        if (this.localData.length !== 0) {
+          this.localData.forEach(handler);
+        }
       },
       changeValue() {
         this.PAYDATA_RESET();
@@ -98,7 +100,6 @@
       },
       changeSec() {
         let tabIndex = this.value7.payType.toString();
-        console.log(tabIndex);
         eventHub.$emit('tabActive', tabIndex);
         this.changeValue();
         this.changeForm();
