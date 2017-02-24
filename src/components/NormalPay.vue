@@ -8,7 +8,7 @@
       </el-col>
     </div>
     <el-col :span="10" v-if="isForm.show">
-      <el-select v-model="valueVersion" placeholder="请选择版本">
+      <el-select v-model="valueVersion" placeholder="请选择版本" @change="emitVersion">
         <el-option
           v-for="item in versions"
           :label="item.label"
@@ -35,6 +35,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import eventHub from '../util/eventHub';
 import { PAYDATA_SET, PAYDATA_RESET, TABLEDATA_SET } from '../store/pay';
 
 export default {
@@ -60,6 +61,9 @@ export default {
     ...mapActions([PAYDATA_RESET, PAYDATA_SET, TABLEDATA_SET]),
     emitMyData(obj) {
       this.$emit('dataChange', obj);
+    },
+    emitVersion() {
+      eventHub.$emit('versionChange', this.valueVersion);
     },
     fastTest() {
       this.dialogFormVisible = true;

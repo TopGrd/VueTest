@@ -51,7 +51,8 @@ export default {
       dialogVisible: {
         value: false,
         save: false
-      }
+      },
+      version: 'a'
     };
   },
   components: {
@@ -83,6 +84,7 @@ export default {
         });
       });
     eventHub.$on('authAgin', this.authAginGen);
+    eventHub.$on('versionChange', this.versionChange);
   },
   computed: mapState({
     authList: state => state.Pay.authList.list,
@@ -138,6 +140,10 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+    versionChange(v) {
+      console.log('version', v);
+      this.version = v;
     },
     /* eslint-disable no-undef */
     init() {
@@ -195,7 +201,7 @@ export default {
             isFetching: false
           });
         }
-      }, 'Common', 'b');
+      }, 'Common', this.version.value);
     }
   }
 };

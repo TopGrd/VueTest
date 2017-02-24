@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "set NODE_ENV=development&&node build/dev-server.js",
-    "build": "node build/build.js",
+    "build": "set NODE_ENV=production&&node build/build.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
